@@ -8,6 +8,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { cartActions } from '../cart-slice';
 import { dateFormatter, timeFormatter } from '../../AllFunctions';
 
+const storedCarts = JSON.parse(localStorage.getItem('items'));
+if(!storedCarts){
+    localStorage.setItem('items', JSON.stringify([]))
+}
+
 function Home() {
     const { setSharedValue, searchedItem } = useContext(MyContext);
     const [allProducts, setAllProducts] = useState([]);

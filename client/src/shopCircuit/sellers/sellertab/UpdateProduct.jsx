@@ -41,7 +41,7 @@ function UpdateProduct() {
                 description,
                 image
             })
-            console.log(result)
+            // console.log(result)
             updateModal.current.open();
         } catch (error) {
             console.log(error);
