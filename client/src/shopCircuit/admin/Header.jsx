@@ -5,7 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import LinkTab from '../links/LinkTab';
 import { useLocation } from 'react-router-dom';
 import { adminDetails, logout } from '../Axios';
-import { restartApp } from '../../AllFunctions';
+import { dateFormatter, restartApp } from '../../AllFunctions';
 import Button from '../buttons/Button';
 import Modal from '../modal/Modal';
 import { IoPersonAdd } from "react-icons/io5";

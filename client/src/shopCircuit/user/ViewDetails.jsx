@@ -2,17 +2,20 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import ProfilePic from '../../assets/images/darkprofile.jpg'
 import { MyContext } from '../store/MyContext';
 import Button from '../buttons/Button';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import LinkTab from '../links/LinkTab';
-import { viewDetails } from '../Axios';
+import { viewDetails, viewExistingOrderedProduct, viewSpecificSeller, viewUserRequirementProduct, viewUserRequirementProductByAdmin } from '../Axios';
 import Modal from '../modal/Modal';
 import { IoIosClose } from 'react-icons/io';
-import { dateFormatter, timeFormatter } from '../../AllFunctions';
+import { checkAdmin, checkSeller, dateFormatter, timeFormatter } from '../../AllFunctions';
 // import { handleViewDetails } from '../../AllFunctions';
 
 function ViewDetails() {
-  const { sharedValue, setSharedValue, viewExistOrder, viewSeller } = useContext(MyContext);
+  const { id } = useParams();
+  const { sharedValue, setSharedValue, viewExistOrder, viewSeller, setViewSeller, setViewExistOrder } = useContext(MyContext);
   const [productOrSeller, setProductOrSeller] = useState(null)
+  const [isAdmin, setIsAdmin] = useState(null)
+  const [isSeller, setIsSeller] = useState(null)
   const imageModal = useRef();
   // console.log(viewSeller);
   // console.log(viewExistOrder);
@@ -42,11 +45,11 @@ function ViewDetails() {
     }
   }
 
-  function handleProductView(){
+  function handleProductView() {
     imageModal.current.open();
     setProductOrSeller(true)
   }
-  function handleSellerView(){
+  function handleSellerView() {
     imageModal.current.open();
     setProductOrSeller(false)
   }
@@ -57,6 +60,89 @@ function ViewDetails() {
     imageModal.current.close();
   }
 
+  async function checkSellerManually() {
+    try {
+      const result = await checkSeller();
+      setIsSeller(result)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    const handleViewDetails = async (id) => {
+      try {
+        const result = await viewDetails(id);
+        setSharedValue(result.data);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    const handleViewExistOrder = async (id) => {
+      try {
+        const result = await viewExistingOrderedProduct(id);
+        setSharedValue([]);
+        setViewExistOrder(result)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    const handleViewUserRequirement = async (id) => {
+      try {
+        const result = await viewUserRequirementProduct(id);
+        setSharedValue([]);
+        setViewExistOrder(result)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    handleViewDetails(id);
+    if(isSeller){
+      handleViewExistOrder(id);
+      handleViewUserRequirement(id);
+    }
+  }, [id])
+
+  async function checkAdminManually() {
+    try {
+      const result = await checkAdmin();
+      setIsAdmin(result)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    checkAdminManually()
+    checkSellerManually()
+  }, [])
+
+   useEffect(() => {
+    const handleViewSeller = async (id) => {
+      try {
+        const result = await viewSpecificSeller(id)
+        setSharedValue([])
+        setViewExistOrder([])
+        setViewSeller(result.data)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    const handleViewUserPostDetail = async (id) => {
+      try {
+        const result = await viewUserRequirementProductByAdmin(id);
+        setSharedValue([]);
+        setViewExistOrder(result)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if(isAdmin){
+      handleViewUserPostDetail(id);
+      handleViewSeller(id);
+    }
+  }, [id])
 
 
   let btnNormal = 'px-4 py-2 bg-blue-600 text-sm rounded-md hover:bg-blue-800 text-stone-300 uppercase'
@@ -206,7 +292,7 @@ function ViewDetails() {
           </>
         ) : (
           <>
-           <Modal ref={imageModal} dialogStyle={'top-0 left-0 my-[8rem] relative rounded-lg mx-auto'}>
+            <Modal ref={imageModal} dialogStyle={'top-0 left-0 my-[8rem] relative rounded-lg mx-auto'}>
               <img src={viewSeller.profilePicOfSellerToView ? `data:image/jpeg;base64,${viewSeller.profilePicOfSellerToView}` : `${ProfilePic}`} className='w-full' alt="" />
               <span onClick={handleImageModalClose} className='text-stone-200 text-4xl rounded-md absolute top-0 right-0 cursor-pointer bg-zinc-800'><IoIosClose /></span>
             </Modal>
