@@ -41,7 +41,8 @@ export const checkAdmin = async () => {
         }
         return true
     } catch (error) {
-        console.log(error)
+       return -1;
+       console.log(error)
     }
 }
 
@@ -54,6 +55,7 @@ export const checkSeller = async () => {
             return true;
         }
     } catch (error) {
+        return -1;
         console.log(error)
     }
 }

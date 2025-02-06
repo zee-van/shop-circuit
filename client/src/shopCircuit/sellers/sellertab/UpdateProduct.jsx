@@ -1,13 +1,16 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { MyContext } from '../../store/MyContext';
-import { updateProductBySeller } from '../../Axios';
+import { selectedProductBySeller, updateProductBySeller } from '../../Axios';
 import Button from '../../buttons/Button';
 import LinkTab from '../../links/LinkTab';
 import Modal from '../../modal/Modal';
 import { IoIosClose } from 'react-icons/io';
+import { useParams } from 'react-router-dom';
 
 function UpdateProduct() {
-    const { sharedValue } = useContext(MyContext);
+    const { id } = useParams();
+    // console.log(id);
+    const { sharedValue, setSharedValue } = useContext(MyContext);
     // console.log(sharedValue)
     const [productName, setProductName] = useState('');
     const [price, setPrice] = useState('');
@@ -47,6 +50,17 @@ function UpdateProduct() {
             console.log(error);
         }
     }
+    useEffect(() => {
+        const handleUpdateProduct = async (id) => {
+            try {
+                const result = await selectedProductBySeller(id);
+                setSharedValue(result.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        handleUpdateProduct(id);
+    }, [id]);
     const handleCloseUpdateModal = () => {
         updateModal.current.close();
     }
@@ -115,7 +129,7 @@ function UpdateProduct() {
     ) : (
         <>
             <div>
-                <h1>Loading...</h1>
+                <h1 className='p-4 text-3xl text-stone-300 font-bold animate-pulse'>Loading...</h1>
             </div>
         </>
     )

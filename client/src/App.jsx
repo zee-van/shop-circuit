@@ -75,6 +75,9 @@ function App() {
   if (isAdmin === null || isSeller === null) {
     return <div className='text-3xl text-center mt-[10rem] font-bold text-stone-300 animate-pulse'>Loading...</div>;
   }
+  if(isAdmin === -1 || isSeller === -1){
+    return <div className='text-3xl text-center mt-[10rem] font-bold text-stone-300 animate-pulse'>Server is offline...</div>;
+  }
   return (
     <>
       <MyProvider>
