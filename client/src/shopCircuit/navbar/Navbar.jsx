@@ -118,7 +118,7 @@ function Navbar() {
                         <LinkTab path={path}>
                         {(path === '/' || path === '/login') ? (
                         <div className='w-24 flex items-center justify-center aspect-square object-cover rounded-full'>
-                            <span className='text-4xl bg-blue-600 p-4 rounded-full text-stone-300'><FaUser /></span>
+                            <span className='text-3xl bg-blue-600 p-4 rounded-full text-stone-300'><FaUser /></span>
                         </div>
                         ) : (
                             <img className='w-24 border-[1px] border-black aspect-square object-cover rounded-full' src={!logPersonDetail.data?.profilePic ? (profilePic ? profilePic : ProfilePic) : (profilePic ? profilePic : `data:image/jpeg;base64,${logPersonDetail.data?.profilePic}`)} alt="profile" />

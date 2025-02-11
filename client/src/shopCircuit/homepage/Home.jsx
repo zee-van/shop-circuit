@@ -245,7 +245,7 @@ function Home() {
                                                 </LinkTab>
                                             </div>
                                             <div className='mt-2'>
-                                                <Button btnStyle={cartItems.find((item) => item.id === product._id) ? btnAdded : `${btnAddToCart}`} handleOnClick={() => handleAddToCart(product._id, product)}>{cartItems.find((item) => item.id === product._id) ? 'Added' : 'Add To Cart'}</Button>
+                                                <Button btnStyle={items.find((item) => item.id === product._id) ? btnAdded : `${btnAddToCart}`} status={items.find((item) => item.id === product._id) ? true : false} handleOnClick={() => handleAddToCart(product._id, product)}>{items.find((item) => item.id === product._id) ? 'Added' : 'Add To Cart'}</Button>
                                             </div>
                                         </div>
                                     </li>
