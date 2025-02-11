@@ -13,6 +13,8 @@ import Store from '../icons/Store';
 import Home from '../homepage/Home';
 import { useNavigate } from 'react-router-dom';
 import Button from '../buttons/Button';
+import { FaUser } from "react-icons/fa";
+
 
 
 
@@ -114,8 +116,14 @@ function Navbar() {
                     </div>
                     <div className='cursor-pointer'>
                         <LinkTab path={path}>
-                            {/* <img className='w-20 aspect-square rounded-full border-[1px] border-black' src={isUser ? `${image}` : `${profilePic}`} alt="profile" /> */}
+                        {(path === '/' || path === '/login') ? (
+                        <div className='w-24 flex items-center justify-center aspect-square object-cover rounded-full'>
+                            <span className='text-4xl bg-blue-600 p-4 rounded-full text-stone-300'><FaUser /></span>
+                        </div>
+                        ) : (
                             <img className='w-24 border-[1px] border-black aspect-square object-cover rounded-full' src={!logPersonDetail.data?.profilePic ? (profilePic ? profilePic : ProfilePic) : (profilePic ? profilePic : `data:image/jpeg;base64,${logPersonDetail.data?.profilePic}`)} alt="profile" />
+                        )}
+                            {/* <img className='w-20 aspect-square rounded-full border-[1px] border-black' src={isUser ? `${image}` : `${profilePic}`} alt="profile" /> */}
                         </LinkTab>
                     </div>
                 </div>
